@@ -1,0 +1,66 @@
+<div class="garage-page">
+  <app-header></app-header>
+
+  <mat-card class="garage-card">
+    <mat-toolbar color="primary" class="toolbar">
+      <mat-icon>build</mat-icon>
+      <span class="toolbar-title">מוסכים</span>
+      <span class="spacer"></span>
+    </mat-toolbar>
+
+    <div class="controls">
+    <mat-form-field appearance="outline" class="search-field">
+        <mat-label>חפש לפי שם</mat-label>
+        <input matInput [(ngModel)]="filterText" placeholder="הקלד שם מוסך" [disabled]="isLoading" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="select-field">
+        <mat-label>בחר מוסכים</mat-label>
+        <!-- disable selection while reloading -->
+        <mat-select multiple [(ngModel)]="selectedGarages" [disabled]="isLoading">
+          <mat-option *ngFor="let g of filterOptions" [value]="g._id" [disabled]="isExisting(g)">{{ g.shem_mosah || 'ללא שם' }}</mat-option>
+        </mat-select>
+        <mat-hint align="start">
+          נמצאו {{ filterOptions.length }} אפשרויות
+          <span *ngIf="duplicateSelectedCount > 0"> - {{ duplicateSelectedCount }} נבחרים כבר קיימים בטבלה</span>
+        </mat-hint>
+      </mat-form-field>
+
+      <div class="controls-actions">
+        <button mat-raised-button color="primary" class="add-btn" (click)="addSelectedGarages()" [disabled]="!selectedGarages || selectedGarages.length === 0 || isLoading">
+          <mat-icon>add</mat-icon>
+          הוסף
+        </button>
+
+        <button mat-stroked-button color="warn" class="clear-btn" (click)="clearAll()" [disabled]="isLoading">
+          <ng-container *ngIf="!isLoading">נקה</ng-container>
+          <ng-container *ngIf="isLoading"><mat-spinner diameter="20"></mat-spinner></ng-container>
+        </button>
+      </div>    
+    </div>
+
+    <div class="table-wrapper">
+      <!-- centered overlay spinner while loading fresh data -->
+      <div class="loading-overlay" *ngIf="isLoading">
+        <mat-spinner diameter="56"></mat-spinner>
+      </div>
+
+      <!-- show table when not loading -->
+      <table mat-table [dataSource]="displayedGarages" class="mat-elevation-z3" *ngIf="!isLoading">
+
+        <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+          <th mat-header-cell *matHeaderCellDef>{{ getColumnLabel(col) }}</th>
+          <td mat-cell *matCellDef="let row">{{ row[col] }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+
+      <div *ngIf="!isLoading && (!garages || garages.length === 0)" class="no-data">
+        אין נתונים להצגה
+      </div>
+    </div>
+  </mat-card>
+</div>
