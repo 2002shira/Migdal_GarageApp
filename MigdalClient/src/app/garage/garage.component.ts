@@ -11,8 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GarageService } from '../shared/services/garage.service';
-import { Garage } from '../models/garage.model';
 import { HeaderComponent } from '../shared/components/header/header.component';
+import { Garage } from '../shared/models/garage.model';
 
 @Component({
   selector: 'app-garage',

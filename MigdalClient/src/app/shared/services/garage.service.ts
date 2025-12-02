@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { API_ROUTES } from '../constants/api-routes';
-import { Garage } from '../../models/garage.model';
+import { Garage } from '../models/garage.model';
 
 @Injectable({ providedIn: 'root' })
 export class GarageService {
